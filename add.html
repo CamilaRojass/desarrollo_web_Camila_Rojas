@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+      <form class="formulario" id="add-adoption-form">
+        <div id="donde" class="grupo-input">
+            <div id="region-input" class="grupo-input">
+            <label for="region">Region</label>
+            <input id="region" name="region" type="text" required>
+            </div>
+            <div id="comuna-input" class="grupo-input">
+            <label for="comuna">Comuna</label>
+            <input id="comuna" name="comuna" type="text" minlength="4" required>
+            </div>
+            <div id="sector-input" class="grupo-input">
+            <label for="sector">Sector</label>
+            <input id="sector" name="sector" type="text" maxlength="100" opcional>
+            </div>
+        </div>
+
+        <div id="contacto" class="grupo-input">
+            <div id="nombre-input" class="grupo-input">
+            <label for="nombre">Nombre</label>
+            <input id="nombre" name="nombre" type="text" minlength="3" maxlength="200" required>
+            </div>
+            <div id="email-input" class="grupo-input">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="text" minlength="4" required> 
+            </div>
+            <div id="numero-input" class="grupo-input">
+            <label for="numero">Numero de celular</label>
+            <input id="numero" name="numero" type="text" maxlength="100" opcional>
+            <div id="contactar-input" class="grupo-input">
+            <label for="contactar">Contactar por</label>
+            <input id="contactar" name="contactar" type="text" maxlength="100" required>
+            </div>
+        </div>
+
+        <div id="mascota" class="grupo-input"> 
+            <div id="tipo-input" class="grupo-input"> 
+            <label for="tipo">Tipo</label>
+            <input type="radio" id="dog" name="tipo" value="DOG">
+            <label for="dog">Perro</label><br>
+            <input type="radio" id="cat" name="tipo" value="CAT">
+            <label for="cat">Gato</label><br>
+            </div>
+            <div id="cantidad-input" class="grupo-input"> 
+            <label for="cantidad">Cantidad</label>
+            <input id="cantidad" name="cantidad" type="number" step="1" min="1" required>
+            </div>
+            <div id="edad-input" class="grupo-input">
+            <label for="edad">Edad</label>
+            <input id="edad" name="edad" type="number" step="1" min="1" required>
+            </div>
+            <div id="unidad-edad-input" class="grupo-input"> 
+            <label for="unidad-edad">Unidad edad</label>
+            <input type="radio" id="month" name="unidad-edad" value="MONTH">
+            <label for="month">Meses</label><br>
+            <input type="radio" id="year" name="unidad-edad" value="YEAR">
+            <label for="year">Años</label><br>
+            </div>
+            <div id="fecha-input" class="grupo-input">
+            <label for="fecha">Fecha disponible para entrega</label>
+            <input id="fecha" name="fecha" type="datetime-local" min="" required>
+            </div>
+            <div id="descripcion-input" class="grupo-input">
+              <label for="descripcion">Descripcion</label>
+              <textarea id="descripcion" name="descripcion" cols="50" rows="10" opcional></textarea>
+            </div>
+            <div id="foto-input" class="grupo-input">
+            <label for="foto">Foto</label>
+            <input id="foto" name="foto" type="text" maxlength="100" required>
+            </div>
+        </div>
+    
+        <div class="botones">
+          <button type="button" id="envio">Enviar</button>
+        </div>
+      </form>
+    </div>
+
+    
+</body>
+</html>
