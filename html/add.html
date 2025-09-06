@@ -113,17 +113,17 @@
 
         <h2>¿Que mascota quieres dar en adopción?</h2>
         <div id="mascota" class="grupo-input"> 
-            <div id="tipo-input" class="grupo-input"> 
+            <div id="tipo-input" class="radio-input"> 
                 <label style="font-weight: bold;">Tipo</label><br>
                 
                 <label for="dog">Perro</label>
-                <input type="radio" id="dog" name="tipo" value="DOG"> <br>
+                <input type="radio" id="dog" name="tipo" value="DOG"> 
 
                 <label for="cat">Gato</label>
-                <input type="radio" id="cat" name="tipo" value="CAT"> <br>
+                <input type="radio" id="cat" name="tipo" value="CAT">
 
             </div>
-
+            <br>
             <div id="cantidad-input" class="grupo-input"> 
             <label for="cantidad" style="font-weight: bold;">Cantidad</label>
             <input id="cantidad" name="cantidad" type="number" step="1" min="1" required>
@@ -134,16 +134,14 @@
             <input id="edad" name="edad" type="number" step="1" min="1" required>
             </div>
 
-            <div id="unidad-edad-input" class="grupo-input"> 
-            <label style="font-weight: bold;">Unidad edad</label>
-              <br>
+            <div id="unidad-edad-input" class="radio-input"> 
+            <label style="font-weight: bold;">Unidad edad</label><br>
+            <label for="month">Meses</label>
             <input type="radio" id="month" name="unidad-edad" value="MONTH">
-            <label for="month">Meses</label><br>
-
+            <label for="year">Años</label>
             <input type="radio" id="year" name="unidad-edad" value="YEAR">
-            <label for="year">Años</label><br>
             </div>
-
+            <br>
             <div id="fecha-input" class="grupo-input">
             <label for="fecha" style="font-weight: bold;">Fecha disponible para entrega</label>
             <input id="fecha" name="fecha" type="datetime-local" required>
