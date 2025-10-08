@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/indexstyle.css') }}">
+    <title>Paws</title>
+</head>
+<body>
+    <!-- navbar -->
+    <div class="navbar">
+        <a href="{{ url_for('index') }}">
+            <img id="logo-id" src="{{ url_for('static', filename='recursos/logo.png') }}" width="200" alt="Logo de Paws">
+        </a>
+        <h2>Bienvenido a Paws, la plataforma de adopción de mascotas!</h2>
+        <a class="navbar-page" href="{{ url_for('agregar_aviso') }}">Agregar nuevo aviso</a>
+        <a class="navbar-page" href="{{ url_for('listado_adopciones') }}">Ver listado de adopciones</a>
+        <a class="navbar-page" href="{{ url_for('estadisticas') }}">Estadísticas</a>
+    </div>
+
+    <!-- Mensajes flash -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}" style="padding: 10px; margin: 10px; background-color: #d4e8ed;">
+                    {{ message }}
+                </div>
+            {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- 5 Ultimas Publicaciones -->
+    <div class="container">
+        <table class="last-adoptions">
+            <thead>
+                <tr>
+                    <th>Fecha de publicacion</th>
+                    <th>Comuna</th>
+                    <th>Sector</th>
+                    <th>Cantidad, Tipo, Edad</th>
+                    <th>Foto</th>
+                </tr>
+            </thead>
+            <tbody id="last-adoptions-list">
+                {% if avisos %}
+                    {% for aviso in avisos %}
+                    <tr style="cursor: pointer;">
+                        <td>{{ aviso.fecha_ingreso.strftime('%Y-%m-%d') if aviso.fecha_ingreso else 'N/A' }}</td>
+                        <td>{{ aviso.comuna }}</td>
+                        <td>{{ aviso.sector or 'N/A' }}</td>
+                        <td>
+                            {{ aviso.cantidad }} 
+                            {{ 'Gato' if aviso.tipo == 'gato' else 'Perro' }}{{ 's' if aviso.cantidad > 1 else '' }}, 
+                            {{ aviso.edad }} {{ 'Mes(es)' if aviso.unidad_medida == 'm' else 'Año(s)' }}
+                        </td>
+                        <td>
+                            {% if aviso.foto %}
+                            <img src="{{ aviso.foto }}" alt="Gato" width="320" height="240">
+                            {% else %}
+                            <span>Sin foto</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="5" style="text-align: center;">
+                            No hay avisos de adopción disponibles
+                        </td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
