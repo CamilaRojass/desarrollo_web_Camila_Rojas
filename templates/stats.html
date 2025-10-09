@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estadísticas</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/statsstyle.css') }}">
+</head>
+<body>
+    <!-- navbar -->
+    <div class="header">
+        <a href="{{ url_for('index') }}">
+            <img id="logo-id" src="{{ url_for('static',filename='recursos/logo.png') }}" width="200" alt="Logo de Paws" style="display:inline-block">
+        </a> <br>
+        <h1 style="display: inline-block">Estadísticas de Adopciones</h1>
+    </div>
+    
+    <div class="container">
+        <!-- Gráfico 1: Líneas - Avisos por día -->
+        <div class="chart-container">
+            <h3>Avisos de Adopción por Día</h3>
+            <img src="{{ url_for('static',filename='recursos/Linea.png') }}" alt="Linea" width="800" height="500">
+        </div>
+        
+        <!-- Gráfico 2: Torta - Total por tipo de mascota -->
+        <div class="chart-container">
+            <h3>Total de Avisos por Tipo de Mascota</h3>
+            <img src="{{ url_for('static',filename='recursos/Torta.png') }}" alt="Torta" width="800" height="500">
+        </div>
+        
+        <!-- Gráfico 3: Barras - Avisos por mes (gatos vs perros) -->
+        <div class="chart-container">
+            <h3>Avisos Mensuales: Gatos vs Perros</h3>
+            <img src="{{ url_for('static',filename='recursos/Barra.png') }}" alt="Barra" width="800" height="500">
+        </div>
+        
+        <!-- Botón para volver al inicio -->
+        <div class="navigation">
+            <a href="{{ url_for('index') }}" class="btn-home">Volver al inicio</a>
+        </div>
+    </div>
+</body>
+</html>

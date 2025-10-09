@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/adoptstyle.css') }}">
+    <title>Adopción</title>
+</head>
+<body>
+    <div class="header">
+        <a href="{{ url_for('index') }}">
+            <img id="logo-id" src="{{ url_for('static', filename='recursos/logo.png') }}" width="200" alt="Logo de Paws" style="display:inline-block">
+        </a> 
+        <br>
+        <h1 style="display: inline-block">Lista de Adopciones</h1>
+    </div>
+
+    <div class="container">
+        {% if total == 0 %}
+            <p style="text-align: center; margin: 40px 0;">No hay avisos de adopción disponibles.</p>
+            <div class="navigation">
+                <a href="{{ url_for('index') }}" class="btn-home">Volver al inicio</a>
+            </div>
+        {% else %}
+            <table class="last-adoptions">
+                <thead>
+                    <tr>
+                        <th>Fecha de publicacion</th>
+                        <th>Comuna</th>
+                        <th>Sector</th>
+                        <th>Cantidad, Tipo, Edad</th>
+                        <th>Foto</th>
+                    </tr>
+                </thead>
+                <tbody id="last-adoptions-list">
+                    {% for aviso in avisos %}
+                        <tr class="table-row" onclick="toggleAdoptionDetail('detail-{{ aviso.id }}')">
+                            <td>{{ aviso.fecha_ingreso.strftime('%Y-%m-%d') if aviso.fecha_ingreso else 'N/A' }}</td>
+                            <td>{{ aviso.comuna }}</td>
+                            <td>{{ aviso.sector or 'N/A' }}</td>
+                            <td>
+                                {{ aviso.cantidad }} 
+                                {{ 'Gato' if aviso.tipo == 'gato' else 'Perro' }}{{ 's' if aviso.cantidad > 1 else '' }}, 
+                                {{ aviso.edad }} {{ 'Mes(es)' if aviso.unidad_medida == 'm' else 'Año(s)' }}
+                            </td>
+                            <td>
+                                {% if aviso.foto %}
+                                <img src="{{ aviso.foto }}" alt="Gato" width="320" height="240" onclick="event.stopPropagation(); toggleFullscreen(this)">
+                                {% else %}
+                                Sin foto
+                                {% endif %}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="5">
+                                <div id="detail-{{ aviso.id }}" class="adoption-detail">
+                                    <div class="detail-content">
+                                        <div class="detail-info">
+                                            <h3>Información Adicional</h3>
+                                            <p><strong>Fecha Publicación:</strong> {{ aviso.fecha_ingreso.strftime('%Y-%m-%d') if aviso.fecha_ingreso else 'N/A' }}</p>
+                                            <p><strong>Fecha Entrega:</strong> {{ aviso.fecha_entrega.strftime('%Y-%m-%d') if aviso.fecha_entrega else 'N/A' }}</p>
+                                            <p><strong>Comuna:</strong> {{ aviso.comuna }}</p>
+                                            <p><strong>Sector:</strong> {{ aviso.sector or 'N/A' }}</p>
+                                            <p><strong>Cantidad/Tipo/Edad:</strong> 
+                                                {{ aviso.cantidad }} 
+                                                {{ 'Gato' if aviso.tipo == 'gato' else 'Perro' }}{{ 's' if aviso.cantidad > 1 else '' }}, 
+                                                {{ aviso.edad }} {{ 'Mes(es)' if aviso.unidad_medida == 'm' else 'Año(s)' }}
+                                            </p>
+                                            <p><strong>Nombre Contacto:</strong> {{ aviso.nombre }}</p>
+                                            <p><strong>Email:</strong> {{ aviso.email }}</p>
+                                            {% if aviso.celular %}
+                                            <p><strong>Celular:</strong> {{ aviso.celular }}</p>
+                                            {% endif %}
+                                            {% if aviso.descripcion %}
+                                            <p><strong>Descripción:</strong> {{ aviso.descripcion }}</p>
+                                            {% endif %}
+                                        </div>
+                                        <div class="detail-photos">
+                                            <h3>Fotos</h3>
+                                            <div class="photo-gallery">
+                                                {% if aviso.fotos %}
+                                                    {% for foto in aviso.fotos %}
+                                                        <img src="{{ foto.ruta_archivo }}" alt="{{ foto.nombre_archivo }}" onclick="toggleFullscreen(this)">
+                                                    {% endfor %}
+                                                {% else %}
+                                                    <p>No hay fotos disponibles</p>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="detail-buttons">
+                                        <button class="btn-back" onclick="toggleAdoptionDetail('detail-{{ aviso.id }}')">Cerrar Detalles</button>
+                                        <a href="{{ url_for('index') }}" class="btn btn-home">Volver al Inicio</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <br>
+            
+            {% if total_paginas > 1 %}
+            <div class="pagination" style="text-align: center; margin: 20px 0;">
+                {% if page > 1 %}
+                    <a href="{{ url_for('listado_adopciones', page=page-1) }}" class="btn-pagination" style="margin: 0 10px;">« Anterior</a>
+                {% endif %}
+                
+                <span class="page-info" style="margin: 0 10px;">Página {{ page }} de {{ total_paginas }}</span>
+                
+                {% if page < total_paginas %}
+                    <a href="{{ url_for('listado_adopciones', page=page+1) }}" class="btn-pagination" style="margin: 0 10px;">Siguiente »</a>
+                {% endif %}
+            </div>
+            {% endif %}
+            
+            <div class="navigation">
+                <a href="{{ url_for('index') }}" class="btn-home">Volver al inicio</a>
+            </div>
+        {% endif %}
+    </div>
+
+    <script src="{{ url_for('static', filename='js/zoom.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/adopt.js') }}"></script>
+</body>
+</html>

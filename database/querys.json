@@ -1,0 +1,25 @@
+{
+  "get_regiones": "SELECT id, nombre FROM region ORDER BY nombre",
+  
+  "get_comunas_por_region": "SELECT id, nombre FROM comuna WHERE region_id = %s ORDER BY nombre",
+  
+  "create_aviso_adopcion": "INSERT INTO aviso_adopcion (fecha_ingreso, comuna_id, sector, nombre, email, celular, tipo, cantidad, edad, unidad_medida, fecha_entrega, descripcion) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+  
+  "get_ultimos_avisos": "SELECT a.id, a.fecha_ingreso, c.nombre as comuna, a.sector, a.tipo, a.cantidad, a.edad, a.unidad_medida, (SELECT f.ruta_archivo FROM foto f WHERE f.actividad_id = a.id ORDER BY f.id LIMIT 1) as foto FROM aviso_adopcion a JOIN comuna c ON a.comuna_id = c.id ORDER BY a.fecha_ingreso DESC LIMIT %s",
+  
+  "get_avisos_paginados": "SELECT a.id, a.fecha_ingreso, c.nombre as comuna, a.sector, a.tipo, a.cantidad, a.edad, a.unidad_medida, a.descripcion, (SELECT f.ruta_archivo FROM foto f WHERE f.actividad_id = a.id ORDER BY f.id LIMIT 1) as foto FROM aviso_adopcion a JOIN comuna c ON a.comuna_id = c.id ORDER BY a.fecha_ingreso DESC LIMIT %s OFFSET %s",
+  
+  "get_total_avisos": "SELECT COUNT(*) FROM aviso_adopcion",
+  
+  "get_aviso_by_id": "SELECT a.id, a.fecha_ingreso, a.comuna_id, c.nombre as comuna, r.id as region_id, r.nombre as region, a.sector, a.nombre, a.email, a.celular, a.tipo, a.cantidad, a.edad, a.unidad_medida, a.fecha_entrega, a.descripcion FROM aviso_adopcion a JOIN comuna c ON a.comuna_id = c.id JOIN region r ON c.region_id = r.id WHERE a.id = %s",
+  
+  "create_foto": "INSERT INTO foto (ruta_archivo, nombre_archivo, actividad_id) VALUES (%s, %s, %s)",
+  
+  "get_fotos_by_aviso": "SELECT id, ruta_archivo, nombre_archivo FROM foto WHERE actividad_id = %s ORDER BY id",
+  
+  "get_primera_foto_by_aviso": "SELECT ruta_archivo FROM foto WHERE actividad_id = %s ORDER BY id LIMIT 1",
+  
+  "create_contacto": "INSERT INTO contactar_por (nombre, identificador, actividad_id) VALUES (%s, %s, %s)",
+  
+  "get_contactos_by_aviso": "SELECT id, nombre, identificador FROM contactar_por WHERE actividad_id = %s ORDER BY id"
+}

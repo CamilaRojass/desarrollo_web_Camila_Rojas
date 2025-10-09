@@ -1,0 +1,85 @@
+/* Contenedor principal */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 80%;
+    margin: auto;
+    font-family: Arial, sans-serif;
+    padding: 40px;
+}
+
+/* Navbar */
+.header {
+    background-color: #64c6da;
+    color: white;
+    font-family: Arial, sans-serif;
+    padding: 30px;
+    text-align: center;
+}
+
+/* Título principal */
+h1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 60px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+#logo-id {
+    display: flex;
+    justify-content: left;
+    margin-bottom: 10px;;
+}
+
+h3 {
+    color: #4db6ac;
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Contenedores de gráficos */
+.chart-container {
+    background-color: #f0f0f0;
+    padding: 30px;
+    border-radius: 10px;
+    margin: 20px 0;
+    width: 90%;
+    max-width: 800px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.chart-container canvas {
+    background-color: white;
+    border-radius: 8px;
+    padding: 10px;
+}
+
+/* Navegación */
+.navigation {
+    margin-top: 40px;
+    text-align: center;
+}
+
+.btn-home {
+    background-color: #64c6da;
+    color: white;
+    padding: 15px 30px;
+    text-decoration: none;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    display: inline-block;
+}
+
+.btn-home:hover {
+    background-color: #4db6ac;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
