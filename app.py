@@ -89,33 +89,31 @@ def api_comunas(region_id):
 def procesar_aviso():
     """Procesa el formulario de agregar aviso de adopción"""
     try:
-        # Validar datos del formulario
+        #Validar datos del formulario
         es_valido, errores = validate_aviso_adopcion(request.form, request.files)
         
         if not es_valido:
             return render_template('add.html', errores=errores, form_data=request.form), 400
         
-        # Preparar datos para inserción
         tipo_mascota = 'gato' if request.form.get('tipo') == 'CAT' else 'perro'
         unidad_medida = 'm' if request.form.get('unidad-edad') == 'MONTH' else 'a'
         
-        # USAR LA FUNCIÓN CORRECTA: create_aviso_adopcion
         aviso_id = db.create_aviso_adopcion(
-            datetime.now().strftime('%Y-%m-%d %H:%M:%S'),  # fecha_ingreso
-            int(request.form.get('comuna')),  # comuna_id
-            sanitizar_texto(request.form.get('sector', '')),  # sector
-            sanitizar_texto(request.form.get('nombre')),  # nombre
-            sanitizar_texto(request.form.get('email')),  # email
-            sanitizar_texto(request.form.get('numero', '')),  # celular
-            tipo_mascota,  # tipo
-            int(request.form.get('cantidad')),  # cantidad
-            int(request.form.get('edad')),  # edad
-            unidad_medida,  # unidad_medida
-            request.form.get('fecha'),  # fecha_entrega
-            sanitizar_texto(request.form.get('descripcion', ''))  # descripcion
+            datetime.now().strftime('%Y-%m-%d %H:%M:%S'),  #fecha_ingreso
+            int(request.form.get('comuna')),  #comuna_id
+            sanitizar_texto(request.form.get('sector', '')),  #sector
+            sanitizar_texto(request.form.get('nombre')),  #nombre
+            sanitizar_texto(request.form.get('email')),  #email
+            sanitizar_texto(request.form.get('numero', '')),  #celular
+            tipo_mascota,  #tipo
+            int(request.form.get('cantidad')),  #cantidad
+            int(request.form.get('edad')),  #edad
+            unidad_medida,  #unidad_medida
+            request.form.get('fecha'),  #fecha_entrega
+            sanitizar_texto(request.form.get('descripcion', ''))  #descripcion
         )
         
-        # Procesar y guardar fotos
+        #Procesar y guardar fotos
         fotos = request.files.getlist('foto')
         for foto in fotos:
             if foto and foto.filename:
@@ -128,10 +126,9 @@ def procesar_aviso():
                 foto.save(ruta_completa)
                 
                 ruta_bd = f'/static/uploads/{nombre_archivo}'
-                # USAR LA FUNCIÓN CORRECTA: create_foto
                 db.create_foto(ruta_bd, nombre_original, aviso_id)
         
-        # Procesar métodos de contacto
+        #Procesar métodos de contacto
         contactos = validar_contactos(request.form)
         for contacto in contactos:
             nombre_bd = contacto['nombre'].lower()
@@ -159,16 +156,16 @@ def listado_adopciones():
         per_page = 5
         offset = (page - 1) * per_page
         
-        # Obtener avisos paginados
+        #Obtener avisos paginados
         avisos_raw = db.get_avisos_paginados(per_page, offset)
         total = db.get_total_avisos()
         
-        # Convertir a diccionarios y obtener información completa de cada aviso
+        #Convertir a diccionarios y obtener información completa de cada aviso
         avisos = []
         for aviso in avisos_raw:
             aviso_id = aviso[0]
             
-            # Obtener detalle completo del aviso (incluyendo contactos)
+            #Obtener detalle completo del aviso
             detalle = db.get_aviso_detalle(aviso_id)
             
             if detalle:
