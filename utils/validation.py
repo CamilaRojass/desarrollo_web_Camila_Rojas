@@ -90,14 +90,11 @@ def validate_aviso_adopcion(form_data, files):
         errores['descripcion'] = 'La descripción no puede exceder 500 caracteres'
     
     # Validar que haya al menos una foto
-    if 'foto' not in files or not files['foto'].filename:
+    fotos = files.getlist('foto') if 'foto' in files else []
+    tiene_foto = any(foto.filename for foto in fotos if foto)
+    if not tiene_foto:
         errores['foto'] = 'Debe subir al menos una foto'
-    
-    # Validar métodos de contacto (al menos uno debe estar seleccionado)
-    contactos_validos = validar_contactos(form_data)
-    if not contactos_validos:
-        errores['contactos'] = 'Debe seleccionar al menos un método de contacto válido'
-    
+
     return len(errores) == 0, errores
 
 def validar_email(email):

@@ -21,5 +21,15 @@
   
   "create_contacto": "INSERT INTO contactar_por (nombre, identificador, actividad_id) VALUES (%s, %s, %s)",
   
-  "get_contactos_by_aviso": "SELECT id, nombre, identificador FROM contactar_por WHERE actividad_id = %s ORDER BY id"
+  "get_contactos_by_aviso": "SELECT id, nombre, identificador FROM contactar_por WHERE actividad_id = %s ORDER BY id",
+
+  "create_comentario": "INSERT INTO comentario (nombre, texto, fecha, aviso_id) VALUES (%s, %s, NOW(), %s)",
+
+  "get_comentarios_by_aviso": "SELECT id, nombre, texto, fecha FROM comentario WHERE aviso_id = %s ORDER BY fecha DESC",
+
+  "get_avisos_por_dia": "SELECT DATE(fecha_ingreso) as fecha, COUNT(*) as cantidad FROM aviso_adopcion GROUP BY DATE(fecha_ingreso) ORDER BY fecha",
+
+  "get_avisos_por_tipo": "SELECT tipo, COUNT(*) as cantidad FROM aviso_adopcion GROUP BY tipo",
+
+  "get_avisos_por_mes_tipo": "SELECT DATE_FORMAT(fecha_ingreso, '%Y-%m') as mes, tipo, COUNT(*) as cantidad FROM aviso_adopcion GROUP BY mes, tipo ORDER BY mes"
 }

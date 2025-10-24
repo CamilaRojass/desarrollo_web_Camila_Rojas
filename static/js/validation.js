@@ -96,9 +96,7 @@ const addAnimationStyles = () => {
 // Ejecutar al cargar
 addAnimationStyles();
 
-// ============================================
 // VALIDACIONES - ¿Dónde está la mascota?
-// ============================================
 
 const validateSelect = (select) => {
   if(!select) return false;

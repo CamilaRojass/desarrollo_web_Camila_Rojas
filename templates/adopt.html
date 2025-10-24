@@ -25,7 +25,7 @@
             <table class="last-adoptions">
                 <thead>
                     <tr>
-                        <th>Fecha de publicacion</th>
+                        <th>Fecha de publicación</th>
                         <th>Comuna</th>
                         <th>Sector</th>
                         <th>Cantidad, Tipo, Edad</th>
@@ -89,6 +89,34 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class="comments-section">
+                                        <h3>Comentarios</h3>
+
+                                        <div class="comment-form">
+                                            <h4>Agregar un comentario</h4>
+                                            <form id="form-comentario-{{ aviso.id }}" onsubmit="agregarComentario(event, '{{ aviso.id }}')">
+                                                <div class="form-group">
+                                                    <label for="nombre-{{ aviso.id }}">Nombre:</label>
+                                                    <input type="text" id="nombre-{{ aviso.id }}" name="nombre" required minlength="3" maxlength="80">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="texto-{{ aviso.id }}">Comentario:</label>
+                                                    <textarea id="texto-{{ aviso.id }}" name="texto" rows="4" cols="50" required minlength="5"></textarea>
+                                                </div>
+                                                <button type="submit" class="btn-submit-comment">Agregar comentario</button>
+                                                <div id="mensaje-{{ aviso.id }}" class="mensaje-comentario"></div>
+                                            </form>
+                                        </div>
+
+                                        <div class="comments-list">
+                                            <h4>Comentarios anteriores</h4>
+                                            <div id="lista-comentarios-{{ aviso.id }}" class="comentarios-container">
+                                                <p class="loading">Cargando comentarios...</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <div class="detail-buttons">
                                         <button class="btn-back" onclick="toggleAdoptionDetail('detail-{{ aviso.id }}')">Cerrar Detalles</button>
                                         <a href="{{ url_for('index') }}" class="btn btn-home">Volver al Inicio</a>
@@ -123,5 +151,6 @@
 
     <script src="{{ url_for('static', filename='js/zoom.js') }}"></script>
     <script src="{{ url_for('static', filename='js/adopt.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/comments.js') }}"></script>
 </body>
 </html>

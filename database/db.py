@@ -189,16 +189,67 @@ def get_aviso_detalle(aviso_id):
     aviso = get_aviso_by_id(aviso_id)
     if not aviso:
         return None
-    
+
     # Obtener fotos
     fotos = get_fotos_by_aviso(aviso_id)
-    
+
     # Obtener contactos
     contactos = get_contactos_by_aviso(aviso_id)
-    
+
     # Estructura de retorno
     return {
         'aviso': aviso,
         'fotos': fotos,
         'contactos': contactos
     }
+
+# -- Queries Comentarios --
+def create_comentario(nombre, texto, aviso_id):
+    """Inserta un comentario para un aviso"""
+    conn = get_conn()
+    cursor = conn.cursor()
+    cursor.execute(
+        QUERY_DICT["create_comentario"],
+        (nombre, texto, aviso_id)
+    )
+    conn.commit()
+    comentario_id = cursor.lastrowid
+    conn.close()
+    return comentario_id
+
+def get_comentarios_by_aviso(aviso_id):
+    """Obtiene todos los comentarios de un aviso"""
+    conn = get_conn()
+    cursor = conn.cursor()
+    cursor.execute(QUERY_DICT["get_comentarios_by_aviso"], (aviso_id,))
+    comentarios = cursor.fetchall()
+    conn.close()
+    return comentarios
+
+# -- Queries Stats --
+def get_avisos_por_dia():
+    """Obtiene la cantidad de avisos por día"""
+    conn = get_conn()
+    cursor = conn.cursor()
+    cursor.execute(QUERY_DICT["get_avisos_por_dia"])
+    datos = cursor.fetchall()
+    conn.close()
+    return datos
+
+def get_avisos_por_tipo():
+    """Obtiene la cantidad de avisos por tipo de mascota"""
+    conn = get_conn()
+    cursor = conn.cursor()
+    cursor.execute(QUERY_DICT["get_avisos_por_tipo"])
+    datos = cursor.fetchall()
+    conn.close()
+    return datos
+
+def get_avisos_por_mes_tipo():
+    """Obtiene la cantidad de avisos por mes y tipo"""
+    conn = get_conn()
+    cursor = conn.cursor()
+    cursor.execute(QUERY_DICT["get_avisos_por_mes_tipo"])
+    datos = cursor.fetchall()
+    conn.close()
+    return datos

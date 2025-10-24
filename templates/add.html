@@ -161,8 +161,8 @@
                 </div>
                 
                 <div id="foto-input" class="grupo-input">
-                    <label for="foto" style="font-weight: bold;">Foto</label>
-                    <input id="foto" name="foto" type="file" accept="image/*,.pdf" multiple required>
+                    <label for="foto" style="font-weight: bold;">Foto (máx 5MB, formatos: JPG, PNG, GIF, PDF)</label>
+                    <input id="foto" name="foto" type="file" accept=".jpg,.jpeg,.png,.gif,.pdf" multiple required onchange="validatePhotos(this)">
                 </div>
                 
                 <div id="additional-photos" class="botones2">
@@ -181,5 +181,6 @@
     <script src="{{ url_for('static', filename='js/validation.js') }}"></script>
     <script src="{{ url_for('static', filename='js/photo.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ url_for('static', filename='js/photo-validation.js') }}"></script>
 </body>
 </html>

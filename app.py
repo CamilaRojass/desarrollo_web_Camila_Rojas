@@ -222,5 +222,117 @@ def detalle_aviso(aviso_id):
 def estadisticas():
     return render_template('stats.html')
 
+# -- APIs stats --
+@app.route('/api/estadisticas/por-dia')
+def api_estadisticas_por_dia():
+    """API para obtener cantidad de avisos por día"""
+    try:
+        datos = db.get_avisos_por_dia()
+        resultado = []
+        for dato in datos:
+            resultado.append({
+                'fecha': dato[0].strftime('%Y-%m-%d'),
+                'cantidad': dato[1]
+            })
+        return jsonify(resultado)
+    except Exception as e:
+        print(f"Error en api_estadisticas_por_dia: {e}")
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/estadisticas/por-tipo')
+def api_estadisticas_por_tipo():
+    """API para obtener cantidad de avisos por tipo de mascota"""
+    try:
+        datos = db.get_avisos_por_tipo()
+        resultado = []
+        for dato in datos:
+            resultado.append({
+                'tipo': dato[0],
+                'cantidad': dato[1]
+            })
+        return jsonify(resultado)
+    except Exception as e:
+        print(f"Error en api_estadisticas_por_tipo: {e}")
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/estadisticas/por-mes-tipo')
+def api_estadisticas_por_mes_tipo():
+    """API para obtener cantidad de avisos por mes y tipo"""
+    try:
+        datos = db.get_avisos_por_mes_tipo()
+        resultado = []
+        for dato in datos:
+            resultado.append({
+                'mes': dato[0],
+                'tipo': dato[1],
+                'cantidad': dato[2]
+            })
+        return jsonify(resultado)
+    except Exception as e:
+        print(f"Error en api_estadisticas_por_mes_tipo: {e}")
+        return jsonify({'error': str(e)}), 500
+
+# -- APIs comentarios --
+@app.route('/api/comentarios/<int:aviso_id>')
+def api_obtener_comentarios(aviso_id):
+    """API para obtener comentarios de un aviso"""
+    try:
+        comentarios_raw = db.get_comentarios_by_aviso(aviso_id)
+        comentarios = []
+        for comentario in comentarios_raw:
+            comentarios.append({
+                'id': comentario[0],
+                'nombre': comentario[1],
+                'texto': comentario[2],
+                'fecha': comentario[3].strftime('%Y-%m-%d %H:%M:%S')
+            })
+        return jsonify(comentarios)
+    except Exception as e:
+        print(f"Error en api_obtener_comentarios: {e}")
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/comentarios/<int:aviso_id>', methods=['POST'])
+def api_agregar_comentario(aviso_id):
+    """API para agregar un comentario a un aviso"""
+    try:
+        datos = request.get_json()
+
+        if not datos:
+            return jsonify({'error': 'No se enviaron datos'}), 400
+
+        nombre = datos.get('nombre', '').strip()
+        texto = datos.get('texto', '').strip()
+
+        #Validaciones
+        errores = []
+        if not nombre or len(nombre) < 3 or len(nombre) > 80:
+            errores.append('El nombre debe tener entre 3 y 80 caracteres')
+
+        if not texto or len(texto) < 5:
+            errores.append('El comentario debe tener al menos 5 caracteres')
+
+        if errores:
+            return jsonify({'error': ', '.join(errores)}), 400
+
+        #Verificar que el aviso existe
+        aviso = db.get_aviso_by_id(aviso_id)
+        if not aviso:
+            return jsonify({'error': 'El aviso no existe'}), 404
+
+        #Insertar comentario
+        comentario_id = db.create_comentario(nombre, texto, aviso_id)
+
+        return jsonify({
+            'success': True,
+            'mensaje': 'Comentario agregado exitosamente',
+            'comentario_id': comentario_id
+        }), 201
+
+    except Exception as e:
+        print(f"Error en api_agregar_comentario: {e}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': 'Error al agregar el comentario'}), 500
+
 if __name__ == '__main__':
     app.run(debug=True)
