@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/addstyle.css') }}">
+    <title>Agregar aviso</title>
+</head>
+<body>
+    <div class="container">
+        <div class="logo"> 
+            <a href="{{ url_for('index') }}">
+                <img id="logo-id" src="{{ url_for('static', filename='recursos/logo.png') }}" width="200" alt="Logo de Paws">
+            </a>
+        </div>
+
+        <!-- Mostrar errores de validación si existen -->
+        {% if errores %}
+        <div class="errores-validacion" style="background-color: #ffebee; border: 1px solid #f44336; padding: 15px; margin: 20px 0; border-radius: 5px;">
+            <h3 style="color: #c62828; margin-top: 0;">Errores de validación:</h3>
+            <ul style="color: #c62828;">
+                {% for campo, mensaje in errores.items() %}
+                    <li><strong>{{ campo }}:</strong> {{ mensaje }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+        <form class="formulario" id="add-adoption-form" method="POST" action="{{ url_for('procesar_aviso') }}" enctype="multipart/form-data">
+            <h2>¿Dónde están las mascotas?</h2>
+            <div id="donde" class="grupo-input">
+                <label for="region" style="font-weight: bold;">Región</label>
+                <select id="region" name="region" required>
+                    <option value="">Seleccione una región</option>
+                </select><br>
+
+                <label for="comuna" style="font-weight: bold;">Comuna</label>
+                <select id="comuna" name="comuna" required>
+                    <option value="">Seleccione una comuna</option>
+                </select><br>
+
+                <label for="sector" style="font-weight: bold;">Sector</label>
+                <input id="sector" name="sector" type="text" maxlength="100" value="{{ form_data.sector if form_data else '' }}"><br>
+            </div>
+
+            <h2>¿Cómo contactarte?</h2>
+            <div id="contacto" class="grupo-input">
+                <div id="nombre-input" class="grupo-input">
+                    <label for="nombre" style="font-weight: bold;">Nombre</label>
+                    <input id="nombre" name="nombre" type="text" minlength="3" maxlength="200" required value="{{ form_data.nombre if form_data else '' }}">
+                </div>
+
+                <div id="email-input" class="grupo-input">
+                    <label for="email" style="font-weight: bold;">Email</label>
+                    <input type="email" id="email" name="email" maxlength="100" required value="{{ form_data.email if form_data else '' }}">
+                </div>
+
+                <div id="numero-input" class="grupo-input">
+                    <label for="numero" style="font-weight: bold;">Número de celular</label>
+                    <input type="tel" id="numero" name="numero" placeholder="+123.45678910" pattern="\+[0-9]{3}\.[0-9]{8}" value="{{ form_data.numero if form_data else '' }}">
+                </div>
+
+                <div id="contactar-input" class="grupo-input">
+                    <label style="font-weight: bold;">Contactar por</label>
+                
+                    <div class="platform"><br>
+                        <label for="tiktok">TikTok</label>
+                        <input type="checkbox" id="tiktok" onchange="manejarCheck(this)">
+                        <div class="url-box" id="tiktok-box" style="display: none;">
+                            <label>Usuario o URL:</label><br>
+                            <textarea placeholder="@usuario o URL" minlength="4" maxlength="50"></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="platform"><br>
+                        <label for="instagram">Instagram</label>
+                        <input type="checkbox" id="instagram" onchange="manejarCheck(this)">
+                        <div class="url-box" id="instagram-box" style="display: none;">
+                            <label>Usuario o URL:</label><br>
+                            <textarea placeholder="@usuario o URL" minlength="4" maxlength="50"></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="platform"><br>
+                        <label for="whatsapp">WhatsApp</label>
+                        <input type="checkbox" id="whatsapp" onchange="manejarCheck(this)">
+                        <div class="url-box" id="whatsapp-box" style="display: none;">
+                            <label>Número:</label><br>
+                            <textarea placeholder="+56912345678" minlength="4" maxlength="50"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="platform"><br>
+                        <label for="x">X</label>
+                        <input type="checkbox" id="x" onchange="manejarCheck(this)">
+                        <div class="url-box" id="x-box" style="display: none;">
+                            <label>Usuario:</label><br>
+                            <textarea placeholder="@usuario" minlength="4" maxlength="50"></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="platform"><br>
+                        <label for="telegram">Telegram</label>
+                        <input type="checkbox" id="telegram" onchange="manejarCheck(this)">
+                        <div class="url-box" id="telegram-box" style="display: none;">
+                            <label>Usuario:</label><br>
+                            <textarea placeholder="@usuario" minlength="4" maxlength="50"></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="platform"><br>
+                        <label for="linkedin">LinkedIn</label>
+                        <input type="checkbox" id="linkedin" onchange="manejarCheck(this)">
+                        <div class="url-box" id="linkedin-box" style="display: none;">
+                            <label>Perfil:</label><br>
+                            <textarea placeholder="URL del perfil" minlength="4" maxlength="50"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h2>¿Qué mascota quieres dar en adopción?</h2>
+            <div id="mascota" class="grupo-input"> 
+                <div id="tipo-input" class="grupo-input"> 
+                    <label style="font-weight: bold;">Tipo</label><br>
+                    
+                    <label for="dog">Perro</label>
+                    <input type="radio" id="dog" name="tipo" value="DOG"><br>
+
+                    <label for="cat">Gato</label>
+                    <input type="radio" id="cat" name="tipo" value="CAT"><br>
+                </div>
+
+                <div id="cantidad-input" class="grupo-input"> 
+                    <label for="cantidad" style="font-weight: bold;">Cantidad</label>
+                    <input id="cantidad" name="cantidad" type="number" step="1" min="1" required value="{{ form_data.cantidad if form_data else '' }}">
+                </div>
+
+                <div id="edad-input" class="grupo-input">
+                    <label for="edad" style="font-weight: bold;">Edad</label>
+                    <input id="edad" name="edad" type="number" step="1" min="1" required value="{{ form_data.edad if form_data else '' }}">
+                </div>
+
+                <div id="unidad-edad-input" class="grupo-input"> 
+                    <label style="font-weight: bold;">Unidad edad</label><br>
+                    <input type="radio" id="month" name="unidad-edad" value="MONTH">
+                    <label for="month">Meses</label><br>
+
+                    <input type="radio" id="year" name="unidad-edad" value="YEAR">
+                    <label for="year">Años</label><br>
+                </div>
+
+                <div id="fecha-input" class="grupo-input">
+                    <label for="fecha" style="font-weight: bold;">Fecha disponible para entrega</label>
+                    <input id="fecha" name="fecha" type="datetime-local" required value="{{ form_data.fecha if form_data else '' }}">
+                </div>
+                
+                <div id="descripcion-input" class="grupo-input">
+                    <label for="descripcion" style="font-weight: bold;">Descripción</label>
+                    <textarea id="descripcion" name="descripcion" cols="50" rows="10">{{ form_data.descripcion if form_data else '' }}</textarea>
+                </div>
+                
+                <div id="foto-input" class="grupo-input">
+                    <label for="foto" style="font-weight: bold;">Foto (máx 5MB, formatos: JPG, PNG, GIF, PDF)</label>
+                    <input id="foto" name="foto" type="file" accept=".jpg,.jpeg,.png,.gif,.pdf" multiple required onchange="validatePhotos(this)">
+                </div>
+                
+                <div id="additional-photos" class="botones2">
+                    <button type="button" onclick="addPhoto(this)">Agregar otra foto</button>
+                </div>
+            </div>
+        
+            <div class="botones">
+                <button type="button" id="envio">Agregar aviso de adopción</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/select.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/checkbox.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/validation.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/photo.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ url_for('static', filename='js/photo-validation.js') }}"></script>
+</body>
+</html>
