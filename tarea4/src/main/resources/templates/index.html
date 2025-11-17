@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluaciones - Paws</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div class="container">
+        <h1>Evaluación de Avisos de Adopción</h1>
+
+        <table class="avisos-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Fecha publicación</th>
+                    <th>Sector</th>
+                    <th>Cantidad Tipo Edad</th>
+                    <th>Comuna</th>
+                    <th>Nota</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="aviso : ${avisos}">
+                    <td th:text="${aviso.id}"></td>
+                    <td th:text="${aviso.fechaIngreso}"></td>
+                    <td th:text="${aviso.sector}"></td>
+                    <td>
+                        <span th:text="${aviso.cantidad}"></span>
+                        <span th:text="${aviso.tipo}"></span>
+                        <span th:text="${aviso.edad}"></span>
+                        <span th:text="${aviso.unidadMedida == 'm' ? 'meses' : 'años'}"></span>
+                    </td>
+                    <td th:text="${aviso.comuna}"></td>
+                    <td th:id="'nota-' + ${aviso.id}">
+                        <span th:if="${aviso.promedio != null}" th:text="${#numbers.formatDecimal(aviso.promedio, 1, 1)}"></span>
+                        <span th:if="${aviso.promedio == null}">-</span>
+                    </td>
+                    <td>
+                        <a href="#" class="evaluar-link" th:data-id="${aviso.id}" onclick="evaluar(this); return false;">evaluar</a>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(avisos)}">
+                    <td colspan="7" style="text-align: center;">No hay avisos de adopción</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script th:src="@{/js/evaluaciones.js}"></script>
+</body>
+</html>
