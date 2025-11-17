@@ -75,7 +75,9 @@ public class EvaluacionController {
             response.put("error", "La nota debe estar entre 1 y 7");
             return ResponseEntity.badRequest().body(response);
         }
-        if (!avisoRepository.existsById(avisoId)) {
+
+        //Verificar que el aviso existe
+        if (avisoId == null || !avisoRepository.existsById(avisoId)) {
             response.put("error", "El aviso no existe");
             return ResponseEntity.status(404).body(response);
         }
