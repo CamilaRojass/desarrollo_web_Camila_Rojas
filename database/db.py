@@ -253,3 +253,35 @@ def get_avisos_por_mes_tipo():
     datos = cursor.fetchall()
     conn.close()
     return datos
+
+# -- Queries Notas --
+def create_nota(aviso_id, nota):
+    """Inserta una nota para un aviso"""
+    conn = get_conn()
+    cursor = conn.cursor()
+    cursor.execute(
+        QUERY_DICT["create_nota"],
+        (aviso_id, nota)
+    )
+    conn.commit()
+    nota_id = cursor.lastrowid
+    conn.close()
+    return nota_id
+
+def get_promedio_nota_by_aviso(aviso_id):
+    """Obtiene el promedio de notas de un aviso"""
+    conn = get_conn()
+    cursor = conn.cursor()
+    cursor.execute(QUERY_DICT["get_promedio_nota_by_aviso"], (aviso_id,))
+    resultado = cursor.fetchone()
+    conn.close()
+    return resultado[0] if resultado and resultado[0] else None
+
+def get_avisos_evaluar():
+    """Obtiene todos los avisos con su promedio de notas para la página de evaluaciones"""
+    conn = get_conn()
+    cursor = conn.cursor()
+    cursor.execute(QUERY_DICT["get_avisos_evaluar"])
+    avisos = cursor.fetchall()
+    conn.close()
+    return avisos

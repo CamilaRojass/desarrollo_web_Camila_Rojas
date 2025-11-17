@@ -31,5 +31,11 @@
 
   "get_avisos_por_tipo": "SELECT tipo, COUNT(*) as cantidad FROM aviso_adopcion GROUP BY tipo",
 
-  "get_avisos_por_mes_tipo": "SELECT DATE_FORMAT(fecha_ingreso, '%Y-%m') as mes, tipo, COUNT(*) as cantidad FROM aviso_adopcion GROUP BY mes, tipo ORDER BY mes"
+  "get_avisos_por_mes_tipo": "SELECT DATE_FORMAT(fecha_ingreso, '%Y-%m') as mes, tipo, COUNT(*) as cantidad FROM aviso_adopcion GROUP BY mes, tipo ORDER BY mes",
+
+  "create_nota": "INSERT INTO nota (aviso_id, nota) VALUES (%s, %s)",
+
+  "get_promedio_nota_by_aviso": "SELECT AVG(nota) FROM nota WHERE aviso_id = %s",
+
+  "get_avisos_para_evaluar": "SELECT a.id, DATE(a.fecha_ingreso) as fecha, a.sector, a.cantidad, a.tipo, a.edad, a.unidad_medida, c.nombre as comuna, (SELECT AVG(n.nota) FROM nota n WHERE n.aviso_id = a.id) as promedio FROM aviso_adopcion a JOIN comuna c ON a.comuna_id = c.id ORDER BY a.fecha_ingreso DESC"
 }
